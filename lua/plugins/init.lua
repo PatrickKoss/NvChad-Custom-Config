@@ -73,6 +73,7 @@ return {
         -- rust
         "rust-analyzer",
         "rustfmt",
+        "codelldb",
         -- go
         "gopls",
         "goimports",
@@ -252,5 +253,379 @@ return {
         },
       }
     end,
+  },
+
+  -- ============================================
+  -- VISUAL ENHANCEMENTS
+  -- ============================================
+
+  -- Noice - Fancy command line & notifications
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    opts = {
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_popup = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+    },
+  },
+
+  -- Todo-comments - Highlight TODO/FIXME/HACK
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
+  },
+
+  -- nvim-ufo - Modern folding with preview
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    event = "BufRead",
+    opts = {
+      provider_selector = function()
+        return { "treesitter", "indent" }
+      end,
+    },
+    init = function()
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+  },
+
+  -- ============================================
+  -- PRODUCTIVITY PLUGINS
+  -- ============================================
+
+  -- Flash - Insanely fast navigation
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    },
+  },
+
+  -- Trouble - Diagnostics list
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    opts = {},
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics" },
+      { "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics" },
+      { "<leader>xl", "<cmd>Trouble lsp toggle<cr>", desc = "LSP References" },
+    },
+  },
+
+  -- Harpoon - Quick file switching
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local harpoon = require("harpoon")
+      harpoon:setup()
+      vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, { desc = "Harpoon add" })
+      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon menu" })
+      vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end, { desc = "Harpoon 1" })
+      vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end, { desc = "Harpoon 2" })
+      vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end, { desc = "Harpoon 3" })
+      vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end, { desc = "Harpoon 4" })
+    end,
+  },
+
+  -- Diffview - Git diff viewer
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+    keys = {
+      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Git Diff" },
+      { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History" },
+      { "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
+    },
+  },
+
+  -- Spectre - Project-wide search & replace
+  {
+    "nvim-pack/nvim-spectre",
+    cmd = "Spectre",
+    keys = {
+      { "<leader>sr", function() require("spectre").open() end, desc = "Search & Replace" },
+      { "<leader>sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Search word" },
+    },
+  },
+
+  -- Symbols-outline - Code outline sidebar
+  {
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+    keys = {
+      { "<leader>so", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" },
+    },
+    opts = {
+      highlight_hovered_item = true,
+      show_guides = true,
+    },
+  },
+
+  -- ============================================
+  -- DEBUGGING (DAP)
+  -- ============================================
+
+  -- nvim-dap - Debug Adapter Protocol client
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      -- UI for nvim-dap
+      {
+        "rcarriga/nvim-dap-ui",
+        dependencies = { "nvim-neotest/nvim-nio" },
+        config = function()
+          local dap, dapui = require("dap"), require("dapui")
+          dapui.setup({
+            icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
+            mappings = {
+              expand = { "<CR>", "<2-LeftMouse>" },
+              open = "o",
+              remove = "d",
+              edit = "e",
+              repl = "r",
+              toggle = "t",
+            },
+            layouts = {
+              {
+                elements = {
+                  { id = "scopes", size = 0.25 },
+                  { id = "breakpoints", size = 0.25 },
+                  { id = "stacks", size = 0.25 },
+                  { id = "watches", size = 0.25 },
+                },
+                size = 40,
+                position = "left",
+              },
+              {
+                elements = {
+                  { id = "repl", size = 0.5 },
+                  { id = "console", size = 0.5 },
+                },
+                size = 10,
+                position = "bottom",
+              },
+            },
+          })
+          -- Auto open/close UI
+          dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+          dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+          dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+        end,
+      },
+      -- Virtual text for variables
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = {
+          enabled = true,
+          enabled_commands = true,
+          highlight_changed_variables = true,
+          highlight_new_as_changed = false,
+          show_stop_reason = true,
+          commented = false,
+        },
+      },
+      -- Mason DAP integration
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        dependencies = "williamboman/mason.nvim",
+        opts = {
+          ensure_installed = { "delve", "debugpy", "js-debug-adapter" },
+          handlers = {},
+        },
+      },
+    },
+    config = function()
+      local dap = require("dap")
+
+      -- Breakpoint signs
+      vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapStopped", { text = "▶", texthl = "DapStopped", linehl = "DapStopped", numhl = "DapStopped" })
+      vim.fn.sign_define("DapBreakpointRejected", { text = "○", texthl = "DapBreakpointRejected", linehl = "", numhl = "" })
+
+      -- Highlight groups for breakpoints
+      vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#E06C75" })
+      vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#E5C07B" })
+      vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#61AFEF" })
+      vim.api.nvim_set_hl(0, "DapStopped", { fg = "#98C379", bg = "#31353f" })
+      vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#ABB2BF" })
+
+      -- =====================
+      -- Go (Delve)
+      -- =====================
+      dap.adapters.delve = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = "dlv",
+          args = { "dap", "-l", "127.0.0.1:${port}" },
+        },
+      }
+      dap.configurations.go = {
+        {
+          type = "delve",
+          name = "Debug",
+          request = "launch",
+          program = "${file}",
+        },
+        {
+          type = "delve",
+          name = "Debug Package",
+          request = "launch",
+          program = "${fileDirname}",
+        },
+        {
+          type = "delve",
+          name = "Debug test",
+          request = "launch",
+          mode = "test",
+          program = "${file}",
+        },
+        {
+          type = "delve",
+          name = "Debug test (go.mod)",
+          request = "launch",
+          mode = "test",
+          program = "./${relativeFileDirname}",
+        },
+      }
+
+      -- =====================
+      -- Python (debugpy)
+      -- =====================
+      dap.adapters.python = {
+        type = "executable",
+        command = "python",
+        args = { "-m", "debugpy.adapter" },
+      }
+      dap.configurations.python = {
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          pythonPath = function()
+            local venv = os.getenv("VIRTUAL_ENV")
+            if venv then
+              return venv .. "/bin/python"
+            end
+            return "python"
+          end,
+        },
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch file with args",
+          program = "${file}",
+          args = function()
+            local args_string = vim.fn.input("Arguments: ")
+            return vim.split(args_string, " ")
+          end,
+          pythonPath = function()
+            local venv = os.getenv("VIRTUAL_ENV")
+            if venv then
+              return venv .. "/bin/python"
+            end
+            return "python"
+          end,
+        },
+      }
+
+      -- =====================
+      -- JavaScript/TypeScript (Node)
+      -- =====================
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "node",
+          args = {
+            vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+            "${port}",
+          },
+        },
+      }
+      dap.configurations.javascript = {
+        {
+          type = "pwa-node",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+        },
+      }
+      dap.configurations.typescript = dap.configurations.javascript
+
+      -- =====================
+      -- Rust (codelldb)
+      -- =====================
+      dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
+          args = { "--port", "${port}" },
+        },
+      }
+      dap.configurations.rust = {
+        {
+          name = "Launch",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+        },
+      }
+    end,
+    keys = {
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+      { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, desc = "Conditional Breakpoint" },
+      { "<leader>dl", function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, desc = "Log Point" },
+      { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
+      { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
+      { "<leader>do", function() require("dap").step_over() end, desc = "Step Over" },
+      { "<leader>dO", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+      { "<leader>ds", function() require("dap").session() end, desc = "Session" },
+      { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
+      { "<leader>du", function() require("dapui").toggle() end, desc = "Toggle DAP UI" },
+      { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
+      { "<F5>", function() require("dap").continue() end, desc = "Debug: Continue" },
+      { "<F10>", function() require("dap").step_over() end, desc = "Debug: Step Over" },
+      { "<F11>", function() require("dap").step_into() end, desc = "Debug: Step Into" },
+      { "<F12>", function() require("dap").step_out() end, desc = "Debug: Step Out" },
+    },
   },
 }

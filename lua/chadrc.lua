@@ -68,7 +68,12 @@ M.base46 = {
 
 M.ui = {
   statusline = {
-    theme = "default",
+    theme = "vscode_colored",
+    separator_style = "round",
+  },
+  tabufline = {
+    enabled = true,
+    lazyload = false,
   },
 }
 
