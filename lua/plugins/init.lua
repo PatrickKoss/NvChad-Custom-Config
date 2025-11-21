@@ -17,6 +17,8 @@ return {
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
+    build = ":TSUpdate",
     opts = {
       ensure_installed = {
         "vim",
@@ -31,13 +33,22 @@ return {
         "markdown_inline",
         "python",
         "go",
+        "gomod",
+        "gosum",
+        "gowork",
         "rust",
         "yaml",
         "terraform",
         "dockerfile",
+        "json",
+        "toml",
       },
       indent = {
         enable = true,
+      },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
       },
     },
   },
@@ -171,7 +182,7 @@ return {
     end,
   },
 
-  -- Rainbow delimiters (replacement for nvim-ts-rainbow which is archived)
+  -- Rainbow delimiters (brackets)
   {
     "HiPhish/rainbow-delimiters.nvim",
     event = "BufRead",
@@ -180,9 +191,64 @@ return {
       vim.g.rainbow_delimiters = {
         strategy = {
           [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
         },
         query = {
           [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      }
+    end,
+  },
+
+  -- Indent blankline (rainbow indents)
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufRead",
+    main = "ibl",
+    config = function()
+      local highlight = {
+        "RainbowRed",
+        "RainbowYellow",
+        "RainbowBlue",
+        "RainbowOrange",
+        "RainbowGreen",
+        "RainbowViolet",
+        "RainbowCyan",
+      }
+
+      local hooks = require "ibl.hooks"
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+        vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
+      end)
+
+      require("ibl").setup {
+        indent = {
+          highlight = highlight,
+          char = "│",
+        },
+        scope = {
+          enabled = true,
+          show_start = true,
+          show_end = false,
+        },
+        exclude = {
+          filetypes = { "help", "dashboard", "NvimTree", "lazy", "mason" },
         },
       }
     end,
