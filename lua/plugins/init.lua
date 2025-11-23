@@ -1,4 +1,33 @@
 return {
+  -- Telescope configuration (extends NvChad defaults)
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      defaults = {
+        layout_config = {
+          horizontal = {
+            preview_width = 0.55,
+          },
+        },
+      },
+      pickers = {
+        keymaps = {
+          show_plug = false, -- Hide <Plug> mappings
+          layout_strategy = "vertical",
+          layout_config = {
+            vertical = {
+              width = 0.9,
+              height = 0.9,
+              preview_height = 0.4,
+              mirror = true,
+            },
+          },
+          sorting_strategy = "ascending",
+        },
+      },
+    },
+  },
+
   -- Conform for formatting
   {
     "stevearc/conform.nvim",
@@ -385,6 +414,30 @@ return {
     opts = {
       highlight_hovered_item = true,
       show_guides = true,
+    },
+  },
+
+  -- ============================================
+  -- AI ASSISTANTS
+  -- ============================================
+
+  -- Claude Code - AI coding assistant
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("claude-code").setup({
+        window = {
+          position = "vertical",
+          split_ratio = 0.3,
+        },
+      })
+    end,
+    keys = {
+      { "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Claude Code" },
+      { "<leader>cC", "<cmd>ClaudeCodeResume<cr>", desc = "Claude Code Resume" },
     },
   },
 

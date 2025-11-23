@@ -4,7 +4,7 @@ local map = vim.keymap.set
 
 -- Your custom mappings
 map("n", ";", ":", { desc = "CMD enter command mode", nowait = true })
-map("i", "jk", "<ESC>")
+map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 map("n", "<C-w>", "<cmd>bd<CR>", { desc = "Close buffer" })
 map("n", "<leader>gg", "<cmd>!golines . -w<CR>", { desc = "Run golines" })
 map("n", "<leader>bb", "<cmd>!black .<CR>", { desc = "Run black" })
@@ -48,6 +48,11 @@ map("x", "<leader>p", '"_dP', { desc = "Paste without yank" })
 -- ============================================
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<C-a>", "ggVG", { desc = "Select all" })
+map("n", "<leader>cp", function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  vim.notify("Copied: " .. path, vim.log.levels.INFO)
+end, { desc = "Copy file path" })
 
 -- Buffer navigation
 map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
@@ -69,3 +74,8 @@ map("n", "zK", function() require("ufo").peekFoldedLinesUnderCursor() end, { des
 map("n", "]t", function() require("todo-comments").jump_next() end, { desc = "Next TODO" })
 map("n", "[t", function() require("todo-comments").jump_prev() end, { desc = "Prev TODO" })
 map("n", "<leader>td", "<cmd>TodoTelescope<cr>", { desc = "Todo Telescope" })
+
+-- ============================================
+-- TELESCOPE
+-- ============================================
+map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })

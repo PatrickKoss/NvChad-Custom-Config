@@ -185,6 +185,7 @@ nvim
 | `<C-s>` | n | Save file |
 | `<leader>w` | n | Save file |
 | `<C-a>` | n | Select all |
+| `<leader>cp` | n | Copy absolute file path to clipboard |
 
 ### Window Navigation
 
@@ -252,6 +253,7 @@ nvim
 | `<leader>ma` | n | Bookmarks |
 | `<leader>th` | n | Theme switcher |
 | `<leader>ch` | n | Cheatsheet |
+| `<leader>fk` | n | Find keymaps |
 
 ### LSP
 
