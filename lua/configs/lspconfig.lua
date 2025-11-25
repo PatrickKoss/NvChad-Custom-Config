@@ -43,6 +43,7 @@ local servers = {
   "rust_analyzer",
   "pyright",
   "yamlls",
+  "jsonls",
   "dockerls",
   "cmake",
   "terraformls",
