@@ -80,3 +80,9 @@ map("n", "<leader>td", "<cmd>TodoTelescope<cr>", { desc = "Todo Telescope" })
 -- TELESCOPE
 -- ============================================
 map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
+map("n", "<leader>fd", function()
+  require("telescope.builtin").find_files({
+    prompt_title = "Find Files (from dir)",
+    cwd = vim.fn.input("Directory: ", vim.fn.getcwd() .. "/", "dir"),
+  })
+end, { desc = "Find files from directory" })

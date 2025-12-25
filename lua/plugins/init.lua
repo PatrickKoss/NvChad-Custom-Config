@@ -4,6 +4,7 @@ return {
     "nvim-telescope/telescope.nvim",
     opts = {
       defaults = {
+        path_display = { "smart" }, -- Show more directory context
         layout_config = {
           horizontal = {
             preview_width = 0.55,
@@ -25,6 +26,19 @@ return {
           sorting_strategy = "ascending",
         },
       },
+    },
+  },
+
+  -- Telescope file browser
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("file_browser")
+    end,
+    keys = {
+      { "<leader>fb", "<cmd>Telescope file_browser<cr>", desc = "File browser" },
+      { "<leader>fB", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>", desc = "File browser (cwd)" },
     },
   },
 
@@ -402,6 +416,24 @@ return {
     keys = {
       { "<leader>sr", function() require("spectre").open() end, desc = "Search & Replace" },
       { "<leader>sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Search word" },
+    },
+  },
+
+  -- Oil.nvim - Buffer-based file navigation
+  {
+    "stevearc/oil.nvim",
+    config = function()
+      require("oil").setup({
+        delete_to_trash = true,
+        skip_confirm_for_simple_edits = true,
+        view_options = {
+          show_hidden = true,
+        },
+      })
+    end,
+    keys = {
+      { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
+      { "<leader>-", function() require("oil").open_float() end, desc = "Open parent directory (float)" },
     },
   },
 
