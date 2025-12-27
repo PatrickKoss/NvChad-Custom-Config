@@ -77,6 +77,17 @@ map("n", "[t", function() require("todo-comments").jump_prev() end, { desc = "Pr
 map("n", "<leader>td", "<cmd>TodoTelescope<cr>", { desc = "Todo Telescope" })
 
 -- ============================================
+-- GIT CONFLICT RESOLUTION
+-- ============================================
+map("n", "<leader>co", "<cmd>GitConflictChooseOurs<cr>", { desc = "Choose Ours (current)" })
+map("n", "<leader>ct", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Choose Theirs (incoming)" })
+map("n", "<leader>cb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Choose Both" })
+map("n", "<leader>cn", "<cmd>GitConflictChooseNone<cr>", { desc = "Choose None" })
+map("n", "[x", "<cmd>GitConflictPrevConflict<cr>", { desc = "Prev Conflict" })
+map("n", "]x", "<cmd>GitConflictNextConflict<cr>", { desc = "Next Conflict" })
+map("n", "<leader>cq", "<cmd>GitConflictListQf<cr>", { desc = "List Conflicts" })
+
+-- ============================================
 -- TELESCOPE
 -- ============================================
 map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })

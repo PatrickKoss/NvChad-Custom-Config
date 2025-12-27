@@ -151,7 +151,8 @@ nvim
 | [folke/flash.nvim](https://github.com/folke/flash.nvim) | Fast navigation |
 | [folke/trouble.nvim](https://github.com/folke/trouble.nvim) | Diagnostics panel |
 | [ThePrimeagen/harpoon](https://github.com/ThePrimeagen/harpoon) | Quick file switching |
-| [sindrets/diffview.nvim](https://github.com/sindrets/diffview.nvim) | Git diff viewer |
+| [sindrets/diffview.nvim](https://github.com/sindrets/diffview.nvim) | Git diff viewer & 3-way merge |
+| [akinsho/git-conflict.nvim](https://github.com/akinsho/git-conflict.nvim) | Inline merge conflict resolution |
 | [nvim-pack/nvim-spectre](https://github.com/nvim-pack/nvim-spectre) | Search & replace |
 | [simrat39/symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim) | Code outline |
 
@@ -317,12 +318,25 @@ nvim
 | `<leader>gd` | n | Open diffview |
 | `<leader>gh` | n | File git history |
 | `<leader>gc` | n | Close diffview |
+| `<leader>gm` | n | 3-way merge view |
 | `]c` | n | Next git hunk |
 | `[c` | n | Previous git hunk |
 | `<leader>rh` | n | Reset hunk |
 | `<leader>ph` | n | Preview hunk |
 | `<leader>gb` | n | Blame line |
 | `<leader>td` | n | Toggle deleted |
+
+### Merge Conflicts
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<leader>co` | n | Choose ours (current) |
+| `<leader>ct` | n | Choose theirs (incoming) |
+| `<leader>cb` | n | Choose both |
+| `<leader>cn` | n | Choose none |
+| `[x` | n | Previous conflict |
+| `]x` | n | Next conflict |
+| `<leader>cq` | n | List all conflicts |
 
 ### Search & Replace (Spectre)
 

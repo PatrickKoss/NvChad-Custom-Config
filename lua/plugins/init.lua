@@ -398,7 +398,7 @@ return {
     },
   },
 
-  -- Diffview - Git diff viewer
+  -- Diffview - Git diff viewer (3-way merge conflicts)
   {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
@@ -406,7 +406,27 @@ return {
       { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Git Diff" },
       { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History" },
       { "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
+      { "<leader>gm", "<cmd>DiffviewOpen -m<cr>", desc = "3-way Merge" },
     },
+  },
+
+  -- Git-conflict - Inline merge conflict resolution
+  {
+    "akinsho/git-conflict.nvim",
+    event = "BufRead",
+    version = "*",
+    config = function()
+      require("git-conflict").setup({
+        default_mappings = false,
+        default_commands = true,
+        disable_diagnostics = true,
+        list_opener = "copen",
+        highlights = {
+          incoming = "DiffAdd",
+          current = "DiffText",
+        },
+      })
+    end,
   },
 
   -- Spectre - Project-wide search & replace
