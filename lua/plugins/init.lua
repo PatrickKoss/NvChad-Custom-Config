@@ -42,6 +42,18 @@ return {
     },
   },
 
+  -- Telescope undo - Visual undo history
+  {
+    "debugloop/telescope-undo.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    keys = {
+      { "<leader>u", "<cmd>Telescope undo<cr>", desc = "Undo history" },
+    },
+    config = function()
+      require("telescope").load_extension("undo")
+    end,
+  },
+
   -- Conform for formatting
   {
     "stevearc/conform.nvim",
@@ -226,6 +238,27 @@ return {
     end,
   },
 
+  -- Yanky - Yank history management
+  {
+    "gbprod/yanky.nvim",
+    event = "VeryLazy",
+    opts = {
+      highlight = { timer = 150 },
+    },
+    keys = {
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank" },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put after" },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put before" },
+      { "<c-n>", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
+      { "<c-p>", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history" },
+      { "<leader>y", "<cmd>Telescope yank_history<cr>", desc = "Yank history" },
+    },
+    config = function(_, opts)
+      require("yanky").setup(opts)
+      require("telescope").load_extension("yank_history")
+    end,
+  },
+
   -- Rainbow delimiters (brackets)
   {
     "HiPhish/rainbow-delimiters.nvim",
@@ -299,6 +332,25 @@ return {
   },
 
   -- ============================================
+  -- QUICKFIX ENHANCEMENTS
+  -- ============================================
+
+  -- nvim-bqf - Better quickfix window
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+    opts = {
+      auto_resize_height = true,
+      preview = {
+        win_height = 12,
+        win_vheight = 12,
+        delay_syntax = 80,
+        border = "rounded",
+      },
+    },
+  },
+
+  -- ============================================
   -- VISUAL ENHANCEMENTS
   -- ============================================
 
@@ -357,6 +409,23 @@ return {
   -- PRODUCTIVITY PLUGINS
   -- ============================================
 
+  -- mini.surround - Fast text manipulation
+  {
+    "echasnovski/mini.surround",
+    event = "VeryLazy",
+    opts = {
+      mappings = {
+        add = "sa",            -- Add surrounding
+        delete = "sd",         -- Delete surrounding
+        find = "sf",           -- Find surrounding (to the right)
+        find_left = "sF",      -- Find surrounding (to the left)
+        highlight = "sh",      -- Highlight surrounding
+        replace = "sr",        -- Replace surrounding
+        update_n_lines = "sn", -- Update `n_lines`
+      },
+    },
+  },
+
   -- Flash - Insanely fast navigation
   {
     "folke/flash.nvim",
@@ -407,6 +476,38 @@ return {
       { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History" },
       { "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
       { "<leader>gm", "<cmd>DiffviewOpen -m<cr>", desc = "3-way Merge" },
+    },
+  },
+
+  -- Gitsigns - Inline git operations
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "BufRead",
+    opts = {
+      signs = {
+        add = { text = "▎" },
+        change = { text = "▎" },
+        delete = { text = "" },
+        topdelete = { text = "" },
+        changedelete = { text = "▎" },
+      },
+      current_line_blame = true,
+      current_line_blame_opts = {
+        delay = 300,
+      },
+    },
+    keys = {
+      { "]h", function() require("gitsigns").next_hunk() end, desc = "Next git hunk" },
+      { "[h", function() require("gitsigns").prev_hunk() end, desc = "Prev git hunk" },
+      { "<leader>hs", function() require("gitsigns").stage_hunk() end, desc = "Stage hunk", mode = { "n", "v" } },
+      { "<leader>hu", function() require("gitsigns").undo_stage_hunk() end, desc = "Undo stage hunk" },
+      { "<leader>hr", function() require("gitsigns").reset_hunk() end, desc = "Reset hunk", mode = { "n", "v" } },
+      { "<leader>hS", function() require("gitsigns").stage_buffer() end, desc = "Stage buffer" },
+      { "<leader>hR", function() require("gitsigns").reset_buffer() end, desc = "Reset buffer" },
+      { "<leader>hp", function() require("gitsigns").preview_hunk() end, desc = "Preview hunk" },
+      { "<leader>hb", function() require("gitsigns").blame_line({ full = true }) end, desc = "Blame line" },
+      { "<leader>tb", function() require("gitsigns").toggle_current_line_blame() end, desc = "Toggle blame" },
+      { "<leader>hd", function() require("gitsigns").diffthis() end, desc = "Diff this" },
     },
   },
 

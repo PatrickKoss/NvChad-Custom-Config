@@ -7,8 +7,8 @@ map("n", ";", ":", { desc = "CMD enter command mode", nowait = true })
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 map("n", "<leader>bd", "<cmd>bd<CR>", { desc = "Close buffer" })
 map("n", "<leader>x", "<cmd>bd<CR>", { desc = "Close buffer" })
-map("n", "<leader>gg", "<cmd>!golines . -w<CR>", { desc = "Run golines" })
-map("n", "<leader>bb", "<cmd>!black .<CR>", { desc = "Run black" })
+map("n", "<leader>ba", "<cmd>%bd|e#<cr>", { desc = "Close all but current" })
+map("n", "<leader>bx", "<cmd>bp|bd#<cr>", { desc = "Close buffer keep window" })
 
 -- ============================================
 -- WINDOW NAVIGATION
@@ -43,6 +43,10 @@ map("n", "N", "Nzzzv", { desc = "Prev search centered" })
 
 -- Better paste (don't overwrite register)
 map("x", "<leader>p", '"_dP', { desc = "Paste without yank" })
+
+-- Visual mode search and replace
+map("v", "//", 'y/<C-R>"<CR>', { desc = "Search selected text" })
+map("v", "<leader>r", '"hy:%s/<C-r>h//gc<left><left><left>', { desc = "Replace selection" })
 
 -- ============================================
 -- QUICK ACTIONS
@@ -88,9 +92,41 @@ map("n", "]x", "<cmd>GitConflictNextConflict<cr>", { desc = "Next Conflict" })
 map("n", "<leader>cq", "<cmd>GitConflictListQf<cr>", { desc = "List Conflicts" })
 
 -- ============================================
+-- QUICKFIX & LOCATION LIST
+-- ============================================
+map("n", "]q", "<cmd>cnext<cr>", { desc = "Next quickfix" })
+map("n", "[q", "<cmd>cprev<cr>", { desc = "Prev quickfix" })
+map("n", "]Q", "<cmd>clast<cr>", { desc = "Last quickfix" })
+map("n", "[Q", "<cmd>cfirst<cr>", { desc = "First quickfix" })
+map("n", "<leader>qc", "<cmd>cclose<cr>", { desc = "Close quickfix" })
+map("n", "<leader>qo", "<cmd>copen<cr>", { desc = "Open quickfix" })
+
+map("n", "]l", "<cmd>lnext<cr>", { desc = "Next location" })
+map("n", "[l", "<cmd>lprev<cr>", { desc = "Prev location" })
+
+-- ============================================
+-- DIAGNOSTICS
+-- ============================================
+map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+map("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
+map("n", "<leader>de", vim.diagnostic.open_float, { desc = "Show diagnostic" })
+
+-- ============================================
+-- FILE EXPLORER (nvim-tree)
+-- ============================================
+map("n", "<C-n>", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer" })
+map("n", "<leader>e", "<cmd>NvimTreeFocus<cr>", { desc = "Focus file explorer" })
+
+-- ============================================
 -- TELESCOPE
 -- ============================================
 map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
+map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+map("n", "<leader>fr", "<cmd>Telescope resume<cr>", { desc = "Resume last picker" })
+map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
+map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Document symbols" })
+map("n", "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<cr>", { desc = "Workspace symbols" })
+map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Fuzzy find in buffer" })
 map("n", "<leader>fd", function()
   require("telescope.builtin").find_files({
     prompt_title = "Find Files (from dir)",

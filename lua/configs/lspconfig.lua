@@ -26,6 +26,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
     map("n", "<leader>ra", vim.lsp.buf.rename, opts "Rename")
     map("n", "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+    map("i", "<C-k>", vim.lsp.buf.signature_help, opts "Signature help")
 
     -- Enable semantic tokens if supported (NOT disabled like NvChad default)
     if client and client.server_capabilities.semanticTokensProvider then

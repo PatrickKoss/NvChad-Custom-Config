@@ -117,8 +117,9 @@ nvim
 | [NvChad/NvChad](https://github.com/NvChad/NvChad) | Base configuration framework |
 | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Lua utility functions |
 | [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder |
+| [nvim-telescope/telescope-file-browser.nvim](https://github.com/nvim-telescope/telescope-file-browser.nvim) | File browser extension |
 | [nvim-tree/nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) | File explorer |
-| [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git integration |
+| [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git integration with inline blame |
 | [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp) | Autocompletion |
 | [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim) | LSP/DAP/Linter installer |
 | [NvChad/base46](https://github.com/NvChad/base46) | Theming system |
@@ -155,6 +156,9 @@ nvim
 | [akinsho/git-conflict.nvim](https://github.com/akinsho/git-conflict.nvim) | Inline merge conflict resolution |
 | [nvim-pack/nvim-spectre](https://github.com/nvim-pack/nvim-spectre) | Search & replace |
 | [simrat39/symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim) | Code outline |
+| [stevearc/oil.nvim](https://github.com/stevearc/oil.nvim) | Buffer-based file navigation |
+| [debugloop/telescope-undo.nvim](https://github.com/debugloop/telescope-undo.nvim) | Visual undo history |
+| [kevinhwang91/nvim-bqf](https://github.com/kevinhwang91/nvim-bqf) | Better quickfix window |
 
 ### Editing
 
@@ -162,6 +166,8 @@ nvim
 |--------|-------------|
 | [max397574/better-escape.nvim](https://github.com/max397574/better-escape.nvim) | Better escape sequences |
 | [m4xshen/autoclose.nvim](https://github.com/m4xshen/autoclose.nvim) | Auto-close brackets |
+| [echasnovski/mini.surround](https://github.com/echasnovski/mini.surround) | Fast text surrounding manipulation |
+| [gbprod/yanky.nvim](https://github.com/gbprod/yanky.nvim) | Yank history management |
 
 ### Debugging
 
@@ -218,6 +224,9 @@ nvim
 | `<S-h>` | n | Previous buffer |
 | `<C-w>` | n | Close buffer |
 | `<leader>x` | n | Close buffer (NvChad) |
+| `<leader>bd` | n | Close buffer |
+| `<leader>ba` | n | Close all buffers except current |
+| `<leader>bx` | n | Close buffer keep window |
 
 ### Line Movement & Editing
 
@@ -230,6 +239,19 @@ nvim
 | `n` | n | Next search result (centered) |
 | `N` | n | Previous search result (centered) |
 | `<leader>p` | x | Paste without yanking |
+| `//` | v | Search selected text |
+| `<leader>r` | v | Replace selection (interactive) |
+
+### Text Manipulation (mini.surround)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `sa` | n, v | Add surrounding (e.g., `saiw"` - surround word with quotes) |
+| `sd` | n | Delete surrounding (e.g., `sd"` - delete quotes) |
+| `sr` | n | Replace surrounding (e.g., `sr"'` - replace quotes with single quotes) |
+| `sf` | n | Find surrounding (to the right) |
+| `sF` | n | Find surrounding (to the left) |
+| `sh` | n | Highlight surrounding |
 
 ### File Explorer (nvim-tree)
 
@@ -237,6 +259,8 @@ nvim
 |-----|------|--------|
 | `<C-n>` | n | Toggle file explorer |
 | `<leader>e` | n | Focus file explorer |
+| `-` | n | Open parent directory (Oil.nvim) |
+| `<leader>-` | n | Open parent directory (Oil.nvim float) |
 
 ### Telescope (Fuzzy Finder)
 
@@ -245,10 +269,19 @@ nvim
 | `<leader>ff` | n | Find files |
 | `<leader>fa` | n | Find all files (including hidden) |
 | `<leader>fw` | n | Live grep (search in files) |
-| `<leader>fb` | n | Find buffers |
+| `<leader>fg` | n | Live grep |
+| `<leader>fb` | n | Find buffers / File browser |
+| `<leader>fB` | n | File browser (current dir) |
 | `<leader>fh` | n | Help tags |
 | `<leader>fo` | n | Old files (recent) |
+| `<leader>fr` | n | Resume last picker |
+| `<leader>fs` | n | Document symbols |
+| `<leader>fS` | n | Workspace symbols |
 | `<leader>fz` | n | Find in current buffer |
+| `<leader>fd` | n | Find files from directory |
+| `<leader>/` | n | Fuzzy find in buffer |
+| `<leader>u` | n | Undo history |
+| `<leader>y` | n | Yank history |
 | `<leader>cm` | n | Git commits |
 | `<leader>gt` | n | Git status |
 | `<leader>ma` | n | Bookmarks |
@@ -265,6 +298,7 @@ nvim
 | `gi` | n | Go to implementation |
 | `gr` | n | Show references |
 | `K` | n | Hover documentation |
+| `<C-k>` | i | Signature help |
 | `<leader>ca` | n | Code action |
 | `<leader>ra` | n | Rename symbol |
 | `<leader>D` | n | Go to type definition |
@@ -272,18 +306,30 @@ nvim
 | `<leader>lf` | n | LSP formatting |
 | `[d` | n | Previous diagnostic |
 | `]d` | n | Next diagnostic |
+| `<leader>e` | n | Show diagnostic float |
 | `<leader>q` | n | Diagnostic loclist |
 | `<leader>wa` | n | Add workspace folder |
 | `<leader>wr` | n | Remove workspace folder |
 | `<leader>wl` | n | List workspace folders |
+
+### Quickfix & Location List
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `]q` | n | Next quickfix item |
+| `[q` | n | Previous quickfix item |
+| `]Q` | n | Last quickfix item |
+| `[Q` | n | First quickfix item |
+| `<leader>qo` | n | Open quickfix |
+| `<leader>qc` | n | Close quickfix |
+| `]l` | n | Next location list item |
+| `[l` | n | Previous location list item |
 
 ### Formatting
 
 | Key | Mode | Action |
 |-----|------|--------|
 | `<leader>fm` | n | Format buffer (conform) |
-| `<leader>gg` | n | Run golines |
-| `<leader>bb` | n | Run black |
 
 ### Flash (Fast Navigation)
 
@@ -311,7 +357,23 @@ nvim
 | `<leader>xd` | n | Buffer diagnostics |
 | `<leader>xl` | n | LSP references |
 
-### Git
+### Git (Gitsigns)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `]h` | n | Next git hunk |
+| `[h` | n | Previous git hunk |
+| `<leader>hs` | n, v | Stage hunk |
+| `<leader>hu` | n | Undo stage hunk |
+| `<leader>hr` | n, v | Reset hunk |
+| `<leader>hS` | n | Stage buffer |
+| `<leader>hR` | n | Reset buffer |
+| `<leader>hp` | n | Preview hunk |
+| `<leader>hb` | n | Blame line (full) |
+| `<leader>tb` | n | Toggle current line blame |
+| `<leader>hd` | n | Diff this |
+
+### Git (Diffview)
 
 | Key | Mode | Action |
 |-----|------|--------|
@@ -319,12 +381,6 @@ nvim
 | `<leader>gh` | n | File git history |
 | `<leader>gc` | n | Close diffview |
 | `<leader>gm` | n | 3-way merge view |
-| `]c` | n | Next git hunk |
-| `[c` | n | Previous git hunk |
-| `<leader>rh` | n | Reset hunk |
-| `<leader>ph` | n | Preview hunk |
-| `<leader>gb` | n | Blame line |
-| `<leader>td` | n | Toggle deleted |
 
 ### Merge Conflicts
 
@@ -369,6 +425,17 @@ nvim
 | `]t` | n | Next TODO comment |
 | `[t` | n | Previous TODO comment |
 | `<leader>td` | n | Search TODOs (Telescope) |
+
+### Yank History (Yanky)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `y` | n, x | Yank text |
+| `p` | n, x | Put after cursor |
+| `P` | n, x | Put before cursor |
+| `<c-n>` | n | Cycle forward through yank history |
+| `<c-p>` | n | Cycle backward through yank history |
+| `<leader>y` | n | Open yank history picker |
 
 ### Copilot
 
