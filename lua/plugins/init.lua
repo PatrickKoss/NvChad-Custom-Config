@@ -423,6 +423,8 @@ return {
         replace = "sr",        -- Replace surrounding
         update_n_lines = "sn", -- Update `n_lines`
       },
+      -- Number of lines within which surrounding is searched
+      n_lines = 50,
     },
   },
 
@@ -432,8 +434,8 @@ return {
     event = "VeryLazy",
     opts = {},
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "<leader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "<leader>S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
     },
   },
 
