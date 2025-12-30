@@ -83,6 +83,7 @@ return {
         "css",
         "javascript",
         "typescript",
+        "tsx",
         "c",
         "markdown",
         "markdown_inline",
@@ -97,6 +98,13 @@ return {
         "dockerfile",
         "json",
         "toml",
+        -- Web development
+        "vue",
+        "scss",
+        "graphql",
+        "svelte",
+        -- Kubernetes/Helm
+        "helm",
       },
       indent = {
         enable = true,
@@ -150,6 +158,16 @@ return {
         -- sql
         "sqlfluff",
         "sqls",
+        -- web development (vue, tailwind, eslint, emmet)
+        "vue-language-server",
+        "tailwindcss-language-server",
+        "eslint-lsp",
+        "emmet-ls",
+        "prettier",
+        -- kubernetes
+        "helm-ls",
+        -- shell
+        "shfmt",
       },
     },
   },
@@ -576,6 +594,29 @@ return {
   -- ============================================
   -- AI ASSISTANTS
   -- ============================================
+
+  -- Keyforge - Tower defense game for learning vim keybindings
+  {
+    "patrickkoss/keyforge.nvim",
+    cmd = { "Keyforge", "KeyforgeStop", "KeyforgeBuild" },
+    build = "make build",
+    opts = {
+      keybind = "<leader>K",
+      keybind_next_challenge = "<leader>kn",
+      keybind_complete = "<leader>kc",
+      keybind_skip = "<leader>ks",
+      keybind_submit = "<CR>",
+      keybind_cancel = "<Esc>",
+      difficulty = "normal",
+      starting_gold = 200,
+      starting_health = 100,
+      auto_build = true, -- Auto-build if binary missing
+      challenge_timeout = 300,
+    },
+    keys = {
+      { "<leader>K", "<cmd>Keyforge<cr>", desc = "Keyforge: Start game" },
+    },
+  },
 
   -- Claude Code - AI coding assistant
   {

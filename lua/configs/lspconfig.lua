@@ -49,9 +49,55 @@ local servers = {
   "cmake",
   "terraformls",
   "vimls",
+  -- Web development
+  "vue_ls",          -- Vue
+  "tailwindcss",     -- Tailwind CSS
+  "eslint",          -- ESLint
+  "emmet_ls",        -- Emmet (HTML/CSS snippets)
+  -- Kubernetes
+  "helm_ls",         -- Helm charts
 }
 
 vim.lsp.enable(servers)
+
+-- YAML with Kubernetes schema validation
+vim.lsp.config("yamlls", {
+  settings = {
+    yaml = {
+      schemas = {
+        kubernetes = "*.yaml",
+        ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+        ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+        ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+        ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+        ["http://json.schemastore.org/taskfile"] = "Taskfile*.{yml,yaml}",
+        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
+        ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
+      },
+      schemaStore = {
+        enable = true,
+        url = "https://www.schemastore.org/api/json/catalog.json",
+      },
+      validate = true,
+      completion = true,
+      hover = true,
+    },
+  },
+})
+
+-- Rust-analyzer with clippy
+vim.lsp.config("rust_analyzer", {
+  settings = {
+    ["rust-analyzer"] = {
+      checkOnSave = {
+        command = "clippy",
+      },
+      cargo = {
+        allFeatures = true,
+      },
+    },
+  },
+})
 
 -- Gopls with enhanced settings for semantic tokens
 vim.lsp.config("gopls", {
