@@ -6,7 +6,7 @@ Personal Neovim configuration based on [NvChad v2.5](https://github.com/NvChad/N
 
 ```bash
 # Clone the config
-git clone https://github.com/PatrickKoss/nvim-config ~/.config/nvim
+git clone https://github.com/PatrickKoss/NvChad-Custom-Config.git ~/.config/nvim
 
 # Start Neovim (first run will install plugins automatically)
 nvim
