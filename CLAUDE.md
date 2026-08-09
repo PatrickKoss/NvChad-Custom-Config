@@ -64,7 +64,8 @@ lua/
 
 ## Requirements
 
-- Neovim >= 0.11
+- Neovim >= 0.12
 - Node.js (for Copilot, some LSP servers)
 - ripgrep (for Telescope)
 - C compiler (for treesitter parsers)
+- tree-sitter CLI >= 0.26.1 (install with `:MasonInstall tree-sitter-cli`)

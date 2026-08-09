@@ -16,11 +16,12 @@ First run will automatically install all plugins via lazy.nvim. Wait for the ins
 
 ## Requirements
 
-- Neovim >= 0.11
+- Neovim >= 0.12
 - Git
 - Node.js (for copilot, some LSP servers)
 - ripgrep (for telescope)
 - A C compiler (gcc/clang) for treesitter parsers
+- tree-sitter CLI >= 0.26.1 (`:MasonInstall tree-sitter-cli`)
 
 ### macOS
 
@@ -31,7 +32,7 @@ brew install neovim node ripgrep
 ### Ubuntu/Debian
 
 ```bash
-# Neovim 0.11+ (use latest from GitHub releases or snap)
+# Neovim 0.12+ (use latest from GitHub releases or snap)
 sudo snap install nvim --classic
 
 sudo apt install nodejs npm ripgrep build-essential

@@ -72,10 +72,12 @@ return {
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = {
+    config = function()
+      local treesitter = require "nvim-treesitter"
+      local ensure_installed = {
         "vim",
         "lua",
         "vimdoc",
@@ -105,15 +107,51 @@ return {
         "svelte",
         -- Kubernetes/Helm
         "helm",
-      },
-      indent = {
-        enable = true,
-      },
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-    },
+      }
+
+      treesitter.setup()
+
+      local mason_bin = vim.fs.joinpath(vim.fn.stdpath "data", "mason", "bin")
+      if not vim.env.PATH:find(mason_bin, 1, true) then
+        vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+      end
+
+      if vim.fn.executable "tree-sitter" == 1 then
+        local installed = treesitter.get_installed "parsers"
+        local missing = vim.tbl_filter(function(lang)
+          return not vim.list_contains(installed, lang)
+        end, ensure_installed)
+
+        if #missing > 0 then
+          treesitter.install(missing)
+        end
+      else
+        vim.notify_once(
+          "nvim-treesitter requires tree-sitter-cli; run :MasonInstall tree-sitter-cli",
+          vim.log.levels.WARN
+        )
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),
+        callback = function(args)
+          local lang = vim.treesitter.language.get_lang(args.match)
+          if not lang then
+            return
+          end
+
+          local ok, parser = pcall(vim.treesitter.get_parser, args.buf, lang)
+          if not ok or not parser then
+            return
+          end
+
+          vim.treesitter.start(args.buf, lang)
+          if vim.treesitter.query.get(lang, "indents") then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
   },
 
   -- Mason
