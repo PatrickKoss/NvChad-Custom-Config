@@ -157,57 +157,19 @@ return {
   -- Mason
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        -- markdown
-        "marksman",
-        -- lua
-        "lua-language-server",
-        "stylua",
-        -- web dev
-        "css-lsp",
-        "html-lsp",
-        "typescript-language-server",
-        -- docker
-        "dockerfile-language-server",
-        "docker-compose-language-service",
-        -- rust
-        "rust-analyzer",
-        "rustfmt",
-        "codelldb",
-        -- go
-        "gopls",
-        "goimports",
-        "goimports-reviser",
-        "golangci-lint",
-        "golangci-lint-langserver",
-        "golines",
-        -- python
-        "pyright",
-        "black",
-        "mypy",
-        "pylint",
-        -- yaml/terraform
-        "terraform-ls",
-        "tflint",
-        "yaml-language-server",
-        "yamlfmt",
-        "yamllint",
-        -- sql
-        "sqlfluff",
-        "sqls",
-        -- web development (vue, tailwind, eslint, emmet)
-        "vue-language-server",
-        "tailwindcss-language-server",
-        "eslint-lsp",
-        "emmet-ls",
-        "prettier",
-        -- kubernetes
-        "helm-ls",
-        -- shell
-        "shfmt",
-      },
-    },
+    event = "VeryLazy",
+    cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
+    config = function(_, opts)
+      require("mason").setup(opts)
+
+      local mason = require "configs.mason"
+
+      vim.api.nvim_create_user_command("MasonInstallAll", function()
+        mason.install_missing { notify = true }
+      end, { desc = "Install every package listed in configs.mason" })
+
+      mason.install_missing()
+    end,
   },
 
   -- Nvim-tree with git
